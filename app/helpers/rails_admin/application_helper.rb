@@ -74,14 +74,14 @@ module RailsAdmin
       nodes_stack = RailsAdmin::Config.visible_models(controller: controller)
       node_model_names = nodes_stack.collect { |c| c.abstract_model.model_name }
       node_model_names = node_model_names.select {|e| !e.include?(["Agent", "BankAccount", "Client"])}
-      
+
       nodes_stack.group_by(&:navigation_label).collect do |navigation_label, nodes|
         nodes = nodes.select { |n| n.parent.nil? || !n.parent.to_s.in?(node_model_names) }
         li_stack = navigation nodes_stack, nodes
 
         label = navigation_label || t('admin.misc.navigation')
 
-        %(<li class='dropdown-header'>#{capitalize_first_letter label}</li>#{li_stack}) if li_stack.present?
+        %(<li class='dropdown-header testeMeu #{node_model_names}'>#{capitalize_first_letter label}</li>#{li_stack}) if li_stack.present?
       end.join.html_safe
     end
 
