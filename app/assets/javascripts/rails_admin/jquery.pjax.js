@@ -1,3 +1,4 @@
+/*
 // jquery.pjax.js
 // copyright chris wanstrath
 // https://github.com/defunkt/jquery-pjax
@@ -741,3 +742,6 @@ $.support.pjax =
 $.support.pjax ? enable() : disable()
 
 })(jQuery);
+
+COMENTADO POIS PARA DESLIGAR O PJDAX.
+/*

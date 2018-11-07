@@ -3,7 +3,9 @@ require 'rails_admin/support/i18n'
 module RailsAdmin
   module ApplicationHelper
     include RailsAdmin::Support::I18n
-
+    def in_dashboard?
+      @abstract_model.try(:pretty_name).nil?
+    end
     def capitalize_first_letter(wording)
       return nil unless wording.present? && wording.is_a?(String)
 
@@ -81,7 +83,7 @@ module RailsAdmin
 
         label = navigation_label || t('admin.misc.navigation')
 
-        %(<li>#{capitalize_first_letter label}</li>#{li_stack}) if li_stack.present?
+        %(#{li_stack}) if li_stack.present?
       end.join.html_safe
     end
 
@@ -92,14 +94,27 @@ module RailsAdmin
 
       nodes_stack.group_by(&:navigation_label).collect do |navigation_label, nodes|
         nodes = nodes.select { |n| n.parent.nil? || !n.parent.to_s.in?(node_model_names) }
-        li_stack = navigation nodes_stack, nodes
+        li_stack = navigation(nodes_stack, nodes)
 
         label = navigation_label || t('admin.misc.navigation')
 
-        %(<li class='dropdown-header testeMeu #{node_model_names}'>#{capitalize_first_letter label}</li>#{li_stack}) if li_stack.present?
+        %(#{li_stack}) if li_stack.present?
       end.join.html_safe
     end
+    def dashboard_navigation
+      nodes_stack = RailsAdmin::Config.visible_models(controller: controller)
+      nodes_stack = nodes_stack.select{|e| !["Agent", "BankAccount", "Client"].include?(e.abstract_model.model_name)}
+      node_model_names = nodes_stack.collect { |c| c.abstract_model.model_name }
 
+      nodes_stack.group_by(&:navigation_label).collect do |navigation_label, nodes|
+        nodes = nodes.select { |n| n.parent.nil? || !n.parent.to_s.in?(node_model_names) }
+        li_stack = navigation_button(nodes_stack, nodes)
+
+        label = navigation_label || t('admin.misc.navigation')
+
+        %(#{li_stack}) if li_stack.present?
+      end.join.html_safe
+    end
     def static_navigation
       li_stack = RailsAdmin::Config.navigation_static_links.collect do |title, url|
         content_tag(:li, link_to(title.to_s, url, target: '_blank'))
@@ -113,11 +128,24 @@ module RailsAdmin
     def navigation(nodes_stack, nodes, level = 0)
       nodes.collect do |node|
         model_param = node.abstract_model.to_param
-        url         = rails_admin.url_for(action: :index, controller: 'rails_admin/main', model_name: model_param)
+        url         = rails_admin.url_for(action: :new, controller: 'rails_admin/main', model_name: model_param)
         level_class = " nav-level-#{level}" if level > 0
         nav_icon = node.navigation_icon ? %(<i class="#{node.navigation_icon}"></i>).html_safe : ''
         li = content_tag :li, data: {model: model_param} do
           link_to nav_icon + capitalize_first_letter(node.label_plural), url, class: "pjax#{level_class}"
+        end
+        li + navigation(nodes_stack, nodes_stack.select { |n| n.parent.to_s == node.abstract_model.model_name }, level + 1)
+      end.join.html_safe
+    end
+
+    def navigation_button(nodes_stack, nodes, level = 0)
+      nodes.collect do |node|
+        model_param = node.abstract_model.to_param
+        url         = rails_admin.url_for(action: :new, controller: 'rails_admin/main', model_name: model_param)
+        level_class = " nav-level-#{level}" if level > 0
+        nav_icon = node.navigation_icon ? %(<i class="#{node.navigation_icon}"></i>).html_safe : ''
+        li = content_tag :p, data: {model: model_param} do
+          link_to nav_icon + capitalize_first_letter(node.label_plural), url, class: "btn btn-primary btn-block btn-lg"
         end
         li + navigation(nodes_stack, nodes_stack.select { |n| n.parent.to_s == node.abstract_model.model_name }, level + 1)
       end.join.html_safe

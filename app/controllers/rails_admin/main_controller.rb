@@ -81,7 +81,7 @@ module RailsAdmin
       elsif params[:_add_edit]
         redirect_to edit_path(id: @object.id, return_to: params[:return_to]), flash: {success: notice}
       else
-        redirect_to back_or_index, flash: {success: notice}
+        redirect_to index_path, flash: {success: notice}
       end
     end
 
