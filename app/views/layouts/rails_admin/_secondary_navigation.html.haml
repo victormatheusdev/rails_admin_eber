@@ -1,7 +1,7 @@
 %ul.nav.navbar-nav.navbar-right.root_links
   =main_navigation_2
   - actions(:root).each do |action|
-    %li{class: "#{action.action_name}_root_link"}= link_to "Página inicial", { action: action.action_name, controller: 'rails_admin/main' }, class: action.pjax? ? "pjax" : ""
+    %li{class: "#{action.action_name}_root_link"}= link_to "Página inicial", { action: action.action_name, controller: 'rails_admin/main' }, class: action.pjax? ? "" : ""
 
   - if _current_user
     - if user_link = edit_user_link
