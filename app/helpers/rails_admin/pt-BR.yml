@@ -1,0 +1,55 @@
+pt-BR:
+  errors:
+    attributes:
+      email:
+        blank: 'O e-mail não pode ficar em branco.'
+        invalid: 'O e-mail informado é inválido.'
+      phone:
+        blank: 'O telefone para contato não pode ficar em branco.'
+        invalid: 'O telefone para contato informado é inválido.'
+      quantity:
+        blank: 'A quantidade que você deseja não pode ficar em branco.'
+        invalid: 'A quantidade informada é inválida.'
+      wallet:
+        blank: 'A wallet/carteira não pode ficar em branco.'
+  activerecord:
+    models:
+      fee:
+        one: "Taxa"
+        other: "Taxas"
+      sell_fee:
+        one: "Taxa de venda"
+        other: "Taxas de venda"
+      buy_fee:
+        one: "Taxa de compra"
+        other: "Taxas de compra"
+      operator:
+        one: "Operador"
+        other: "Operadores"
+      coin:
+        one: "Moeda"
+        other: "Moedas"
+      buy:
+        one: "Compra"
+        other: "Compras"
+      bank:
+        one: "Banco"
+        other: "Bancos"
+      bank_account:
+        one: "Conta bancária"
+        other: "Contas bancárias"
+    attributes:
+      agent:
+        name: "Nome"
+
+      fee:
+        description: "Descrição"
+        value: "Valor"
+        value_type: "Tipo do valor"
+        type: "Tipo"
+        coin: "Moeda que será aplicada a taxa"
+      buy:
+        email: "E-mail"
+        phone: "Telefone"
+        coin: "Cryptomoeda"
+        quantity: "Quantidade"
