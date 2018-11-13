@@ -1,3 +1,5 @@
+- actions(:root).each do |action|
+    %div{class: "#{action.action_name}_root_link", style:"padding:10px;"}= link_to raw('<span class="icon-home"></span> Página inicial'), { action: action.action_name, controller: 'rails_admin/main' },style:"margin-top:30px;", class: "btn btn-danger btn-lg text-right pull-right" if !in_dashboard?
 
-%ul.nav.nav-pills.nav-stacked= main_navigation if !in_dashboard?
-%ul.nav.nav-pills.nav-stacked= static_navigation
+-#%ul.nav.nav-pills.nav-stacked= main_navigation if !in_dashboard?
+-#%ul.nav.nav-pills.nav-stacked= static_navigation
