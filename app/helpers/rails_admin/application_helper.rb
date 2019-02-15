@@ -145,7 +145,12 @@ module RailsAdmin
     def navigation_button(nodes_stack, nodes, level = 0)
       nodes.collect do |node|
         model_param = node.abstract_model.to_param
-        url         = rails_admin.url_for(action: :new, controller: 'rails_admin/main', model_name: model_param)
+        if node.abstract_model.model_name == "InitialChip"
+        url         = rails_admin.url_for(action: :index, controller: 'rails_admin/main', model_name: model_param)
+        else
+          url         = rails_admin.url_for(action: :new, controller: 'rails_admin/main', model_name: model_param)
+
+        end
         level_class = " nav-level-#{level}" if level > 0
         nav_icon = node.navigation_icon ? %(<i class="#{node.navigation_icon}"></i>).html_safe : ''
         li = content_tag :p, data: {model: model_param} do
